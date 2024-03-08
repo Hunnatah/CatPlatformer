@@ -1,0 +1,3 @@
+REMEMBER:
+ -Upload changes to the development branch
+ -Do not upload directly to main
