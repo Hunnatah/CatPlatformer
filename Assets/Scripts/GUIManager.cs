@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEditor.SearchService;
 
 public class GUIManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class GUIManager : MonoBehaviour
     #endregion
     #region Variables
     // State variable
-    private State _gameState = State.MainMenu;
+    [SerializeField, Tooltip("Set to the state you want to begin on")] private State _gameState;
     // String array of enum names to automate length check
     private string[] _enumNames;
 
@@ -65,8 +66,12 @@ public class GUIManager : MonoBehaviour
         // Clearing any panels that may be active
         ClearPanels();
 
-        // Swapping to MainMenu scene
-        ChangeScene("MainMenu");
+        // Ensuring game is not already in MainMenu scene
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu"))
+        {
+            // Swapping to MainMenu scene
+            ChangeScene("MainMenu");
+        }
 
         yield return null;
     }
@@ -167,6 +172,9 @@ public class GUIManager : MonoBehaviour
 
         // Storing the flow of time
         _defaultTime = Time.timeScale;
+
+        // Starting State Machine
+        NextState();
     }
     #endregion
 }
