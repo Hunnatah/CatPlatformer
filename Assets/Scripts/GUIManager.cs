@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GUIManager : MonoBehaviour
 {
@@ -22,11 +23,14 @@ public class GUIManager : MonoBehaviour
     private string[] _enumNames;
 
     #region Panel Refrences
-    [SerializeField] private GameObject _PausePanel;
+    [SerializeField] private GameObject _PauseMenu;
     [SerializeField] private GameObject _PlayPanel;
-    [SerializeField] private GameObject _WinPanel;
-    [SerializeField] private GameObject _LosePanel;
+    [SerializeField] private GameObject _WinMenu;
+    [SerializeField] private GameObject _LoseMenu;
     #endregion
+
+    // Variable to store the flow of time
+    private float _defaultTime;
 
     #endregion
     #region Gamestate Switch
@@ -35,36 +39,134 @@ public class GUIManager : MonoBehaviour
         switch (_gameState)
         {
             case State.MainMenu:
-
+                StartCoroutine(MainMenuState());
                 break; 
             case State.Play:
-
-              break;
+                StartCoroutine(PlayState());
+                break;
+            case State.Pause:
+                StartCoroutine(PauseState());
+                break;
             case State.Win:
-
-              break;
+                StartCoroutine(WinState());
+                break;
             case State.Lose:
-
-              break;
+                StartCoroutine(LoseState());
+                break;
             default:
                 Debug.LogError("State Machine (GameState) Broke: Entered nonexistent state");
                 break;
         }
     }
     #region Gamestate Functions
-    //---------------TO DO-----------------
+    private IEnumerator MainMenuState()
+    {
+
+        // Clearing any panels that may be active
+        ClearPanels();
+
+        // Swapping to MainMenu scene
+        ChangeScene("MainMenu");
+
+        yield return null;
+    }
+
+    private IEnumerator PlayState()
+    {
+        // Clearing any panels that may be active
+        ClearPanels();
+
+        // Activating PlayPanel
+        _PlayPanel.SetActive(true);
+
+        yield return null;
+    }
+
+    private IEnumerator PauseState()
+    {
+        // Pausing time
+        Time.timeScale = 0.0f;
+
+        // Clearing any panels that may be active
+        ClearPanels();
+
+        // Activating PausePanel
+        _PauseMenu.SetActive(true);
+
+        yield return null;
+    }
+
+    private IEnumerator WinState()
+    {
+        // Clearing any panels that may be active
+        ClearPanels();
+
+        // Activating WinPanel
+        _WinMenu.SetActive(true);
+
+        yield return null;
+    }
+
+    private IEnumerator LoseState()
+    {
+        // Clearing any panels that may be active
+        ClearPanels();
+
+        // Activating LosePanel
+        _LoseMenu.SetActive(true);
+
+        yield return null;
+    }
+
+    public void ChangeState(string targetState)  // ----May want to swap to int-based state change----
+    {
+        // Setting GameState to the targeted one
+        _gameState = System.Enum.Parse<State>(targetState);
+
+        // Ensuring time isnt paused
+        if (Time.timeScale != _defaultTime)
+        {
+            Time.timeScale = _defaultTime;
+        }
+
+        NextState();
+    }
+    #endregion
+    #region General Functions
+    private void ClearPanels()
+    {
+        // Disabling everey GUI panel
+        _PauseMenu.SetActive(false);
+        _PlayPanel.SetActive(false);
+        _WinMenu.SetActive(false);
+        _LoseMenu.SetActive(false);
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void ExitToDeskTop()
+    {
+        // Closes the Game
+        Application.Quit();
+
+        // Does the equivilant of above in Unity editor (for testing purposes)
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+    }
     #endregion
     #endregion
-    #region Start and Update
+    #region Start
     void Start()
     {
         // Filling enumNames array
         _enumNames = System.Enum.GetNames(typeof(State));
-    }
 
-    void Update()
-    {
-        
+        // Storing the flow of time
+        _defaultTime = Time.timeScale;
     }
     #endregion
 }
