@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEditor.SearchService;
 
 public class GUIManager : MonoBehaviour
 {
@@ -137,6 +136,7 @@ public class GUIManager : MonoBehaviour
         NextState();
     }
     #endregion
+    #endregion
     #region General Functions
     private void ClearPanels()
     {
@@ -158,11 +158,10 @@ public class GUIManager : MonoBehaviour
         Application.Quit();
 
         // Does the equivilant of above in Unity editor (for testing purposes)
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #endif
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
-    #endregion
     #endregion
     #region Start
     void Start()
@@ -175,6 +174,23 @@ public class GUIManager : MonoBehaviour
 
         // Starting State Machine
         NextState();
+    }
+    #endregion
+    #region Update
+    private void Update()
+    {
+        // Pause Key
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            // Differing behaviour based on active state
+            if(_gameState == State.Play)
+            {
+                ChangeState("Pause");
+            }else if (_gameState == State.Pause)
+            {
+                ChangeState("Play");
+            }
+        }
     }
     #endregion
 }
