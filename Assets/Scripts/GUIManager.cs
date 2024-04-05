@@ -191,6 +191,16 @@ public class GUIManager : MonoBehaviour
                 ChangeState("Play");
             }
         }
+
+        // TEMPORARY
+        if (Input.GetKeyDown(KeyCode.O) && _gameState == State.Play)
+        {
+            ChangeState("Win");
+        }
+        if (Input.GetKeyDown(KeyCode.L) && _gameState == State.Play)
+        {
+            ChangeState("Lose");
+        }
     }
     #endregion
 }
