@@ -86,7 +86,7 @@ public class CatController : MonoBehaviour
         }
 
         // Checks if controller, then if true, controller may jump + gravity will be clamped
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (controller.isGrounded || doubleJump)
             {
