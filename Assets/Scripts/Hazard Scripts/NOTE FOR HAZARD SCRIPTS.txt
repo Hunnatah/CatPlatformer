@@ -1,0 +1,13 @@
+Hazard.cs goes on all the hazard gameobjects, WallHazard acts as a sort of addon to get the moving hazard moving.
+If you view the Hazard.cs script you will see that there is a hazard value to differenciate between the two, this
+was meant to have more functionality but ended up not having any apart from a debug.log indicating which hazard 
+type was collided with.
+
+The Wall Hazard/Moving Hazard will constantly be on the same y level as the player to ensure acollision due to it
+being a drone, whether this is how you intended it to be or not this is how I thought it was going to work. When the
+player collides with a hazard they will be sent back to their starting position, the wall hazard will also be sent
+back to it's starting position as to not have it drift off into nothing.
+
+Player.cs is meant to work with the hazard scipts but should be able to be integrated with another player script without
+much problem, if the name of the scipt changes the hazards will break as they need to change a bool from the player script,
+changing the player script name in Hazard.cs and it'll function like it did before.
