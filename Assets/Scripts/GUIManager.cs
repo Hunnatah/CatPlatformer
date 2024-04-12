@@ -102,9 +102,6 @@ public class GUIManager : MonoBehaviour
 
     private IEnumerator WinState()
     {
-        // Pausing time
-        Time.timeScale = 0.0f;
-
         // Clearing any panels that may be active
         ClearPanels();
 
@@ -116,9 +113,6 @@ public class GUIManager : MonoBehaviour
 
     private IEnumerator LoseState()
     {
-        // Pausing time
-        Time.timeScale = 0.0f;
-
         // Clearing any panels that may be active
         ClearPanels();
 
